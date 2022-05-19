@@ -1,0 +1,31 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: demo-cluster
+  region: us-east-1
+
+vpc:
+  subnets:
+    private:
+      us-east-1a: { id: subnet-05b2682c5a4460741 }
+      us-east-1b: { id: subnet-03a7bb9b5e202fe89 }
+      us-east-1c: { id: subnet-00d14b4c2d4e354d8 }
+      us-east-1d: { id: subnet-0ac3469628d26e1a1 }
+      us-east-1e: { id: subnet-01048b6848d3fb2a1 }
+      us-east-1f: { id: subnet-09ad9fbbfd4815cc0 }
+
+nodeGroups:
+  - name: ng-1-workers
+    labels: { role: workers }
+    instanceType: t3.small
+    desiredCapacity: 2
+    privateNetworking: true
+  - name: ng-2-builders
+    labels: { role: builders }
+    instanceType: t3.small
+    desiredCapacity: 2
+    privateNetworking: true
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
